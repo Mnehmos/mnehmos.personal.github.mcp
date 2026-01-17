@@ -22,7 +22,7 @@ GitHub becomes the persistent brain; the agent is the stateless hands. The agent
 ```bash
 # Clone repository
 git clone https://github.com/Mnehmos/mnehmos.personal.github.mcp.git
-cd mnehmos.github.mcp
+cd mnehmos.personal.github.mcp
 
 # Install dependencies
 npm install
@@ -43,7 +43,7 @@ Add to your MCP client configuration:
   "mcpServers": {
     "github": {
       "command": "node",
-      "args": ["path/to/mnehmos.github.mcp/dist/index.js"]
+      "args": ["path/to/mnehmos.personal.github.mcp/dist/index.js"]
     }
   }
 }
