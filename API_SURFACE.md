@@ -557,3 +557,9 @@ Based on this research, the MCP server should add:
 - [x] github_reaction
 - [x] github_status (cross-repo)
 - [x] GraphQL project field updates
+
+### Phase 4 (Roadmap)
+
+- [x] github_actions - Workflow management (#2)
+- [ ] github_security - Code scanning, Dependabot alerts (#3)
+- [ ] github_discussion - GitHub Discussions support (#4)

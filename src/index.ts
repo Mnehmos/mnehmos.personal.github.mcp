@@ -41,6 +41,9 @@ import { GithubNotificationInputSchema } from './schemas/notification.js';
 import { GithubReactionInputSchema } from './schemas/reaction.js';
 import { GithubStatusInputSchema } from './schemas/status.js';
 
+// Phase 4 schemas
+import { GithubActionsInputSchema } from './schemas/actions.js';
+
 // Phase 1 handlers
 import { handleIssueTool } from './tools/issue.js';
 import { handleContextTool } from './tools/context.js';
@@ -58,6 +61,9 @@ import { handleSearchTool } from './tools/search.js';
 import { handleNotificationTool } from './tools/notification.js';
 import { handleReactionTool } from './tools/reaction.js';
 import { handleStatusTool } from './tools/status.js';
+
+// Phase 4 handlers
+import { handleActionsTool } from './tools/actions.js';
 
 // CLI for meta operations
 import { gh } from './cli.js';
@@ -243,6 +249,16 @@ Use 'get' for full status, or specific actions for filtered views.`,
     inputSchema: GithubStatusInputSchema,
   },
 
+  // ===== Phase 4: CI/CD =====
+  {
+    name: 'github_actions',
+    description: `Manage GitHub Actions workflows and runs.
+
+Actions: list_workflows, list_runs, get_run, run, cancel, rerun, rerun_failed, list_jobs, get_logs
+Trigger workflows, monitor runs, view logs, retry failed jobs.`,
+    inputSchema: GithubActionsInputSchema,
+  },
+
   // ===== Meta: Self-documentation =====
   {
     name: 'github_meta',
@@ -333,6 +349,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         break;
       case 'github_status':
         result = await handleStatusTool(args as any);
+        break;
+
+      // Phase 4
+      case 'github_actions':
+        result = await handleActionsTool(args as any);
         break;
 
       // Meta
