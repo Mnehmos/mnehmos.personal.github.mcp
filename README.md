@@ -21,7 +21,7 @@ GitHub becomes the persistent brain; the agent is the stateless hands. The agent
 
 ```bash
 # Clone repository
-git clone https://github.com/Mnehmos/mnehmos.github.mcp.git
+git clone https://github.com/Mnehmos/mnehmos.personal.github.mcp.git
 cd mnehmos.github.mcp
 
 # Install dependencies
