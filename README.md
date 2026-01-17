@@ -10,12 +10,12 @@ GitHub becomes the persistent brain; the agent is the stateless hands. The agent
 
 ## Philosophy
 
-| Principle | Implementation |
-|-----------|---------------|
-| **Database is intelligence** | GitHub Issues/Projects/Wiki = persistent state |
-| **Agent is hands** | MCP tools = stateless executors via `gh` CLI |
-| **LLM describes, engine validates** | Zod schemas validate before `gh` execution |
-| **Scalpel, not hammer** | Targeted queries, batch operations, minimal context |
+| Principle                           | Implementation                                      |
+| ----------------------------------- | --------------------------------------------------- |
+| **Database is intelligence**        | GitHub Issues/Projects/Wiki = persistent state      |
+| **Agent is hands**                  | MCP tools = stateless executors via `gh` CLI        |
+| **LLM describes, engine validates** | Zod schemas validate before `gh` execution          |
+| **Scalpel, not hammer**             | Targeted queries, batch operations, minimal context |
 
 ## Installation
 
@@ -94,6 +94,7 @@ Reconstruct session context for agent startup.
 ```
 
 Output:
+
 ```
 🎮 Session Context
 Repository: owner/repo
@@ -126,6 +127,7 @@ Manage GitHub Projects (Kanban boards).
 ```
 
 Output:
+
 ```
 📋 Project: Development Board
 ══════════════════════════════════════════════════════
@@ -168,6 +170,7 @@ Track issue relationships and dependencies.
 ```
 
 Output:
+
 ```
 🗺️ Dependency Graph for #42
 ────────────────────────────────────────
@@ -189,22 +192,23 @@ Relationships:
 
 Labels are automatically normalized:
 
-| Input | Normalized |
-|-------|------------|
-| `"in progress"`, `"wip"` | `"in-progress"` |
-| `"bugfix"`, `"fix"` | `"bug"` |
-| `"high pri"`, `"p1"` | `"priority:high"` |
-| `"feature request"` | `"enhancement"` |
+| Input                    | Normalized        |
+| ------------------------ | ----------------- |
+| `"in progress"`, `"wip"` | `"in-progress"`   |
+| `"bugfix"`, `"fix"`      | `"bug"`           |
+| `"high pri"`, `"p1"`     | `"priority:high"` |
+| `"feature request"`      | `"enhancement"`   |
 
 ## Agent Workflow
 
 ### Session Start
+
 ```typescript
 // Reconstruct context in ONE call
 const ctx = await github_context({
   action: "get",
   repo: "Mnehmos/my-project",
-  include: ["active_tasks", "blockers", "in_progress"]
+  include: ["active_tasks", "blockers", "in_progress"],
 });
 // Agent now knows:
 // - What tasks are assigned
@@ -213,23 +217,47 @@ const ctx = await github_context({
 ```
 
 ### Task Lifecycle
+
 ```typescript
 // 1. Create task
-await github_issue({ action: "create", repo, title: "Research OAuth2", labels: ["research"] });
+await github_issue({
+  action: "create",
+  repo,
+  title: "Research OAuth2",
+  labels: ["research"],
+});
 
 // 2. Start working
-await github_issue({ action: "batch_update", repo, operations: [
-  { issue: 42, labels: { add: ["in-progress"], remove: ["todo"] } }
-]});
+await github_issue({
+  action: "batch_update",
+  repo,
+  operations: [
+    { issue: 42, labels: { add: ["in-progress"], remove: ["todo"] } },
+  ],
+});
 
 // 3. Document findings
-await github_issue({ action: "comment", repo, issue: 42, comment: "## Findings\n..." });
+await github_issue({
+  action: "comment",
+  repo,
+  issue: 42,
+  comment: "## Findings\n...",
+});
 
 // 4. Complete
-await github_issue({ action: "close", repo, issue: 42, comment: "Done. Decision: passport.js" });
+await github_issue({
+  action: "close",
+  repo,
+  issue: 42,
+  comment: "Done. Decision: passport.js",
+});
 
 // 5. Create follow-up
-await github_issue({ action: "create", repo, title: "Implement OAuth2 with passport.js" });
+await github_issue({
+  action: "create",
+  repo,
+  title: "Implement OAuth2 with passport.js",
+});
 ```
 
 ## Development
@@ -251,8 +279,10 @@ npm run build
 ## Requirements
 
 - Node.js 18+
-- GitHub CLI (`gh`) authenticated
+- GitHub CLI (`gh`) 2.4.0+ authenticated (for `--json` flag support)
 - Repository access for target operations
+
+> **Note for Mac users**: If you get `unknown flag: --json`, update your gh CLI: `brew upgrade gh`
 
 ## License
 
